@@ -65,6 +65,55 @@ class Interpreter:
                 bytecode_methode(argument)
 
 
+# Let's use python internal to get some real bytecode
+def get_bytecode_example():
+    # Function definition
+    def cond():
+        x = 3
+        if x < 5:
+            return 'OK!'
+        else:
+            return 'NOT OK :('
+
+    # Get the bytecode
+    bytecode = cond.__code__.co_code
+    bytes_list = list(bytecode)
+    print(f"Raw byte code: {bytecode} \nInt representation: {bytes_list}")
+
+    import dis
+    info = dis.dis(cond)
+    print(f"Using dis:\n{info}")
+
+
+def get_bytecode_example_loop():
+    # Function definition
+    def loop():
+        x = 0
+        for i in range(5):
+            x += i
+
+    def while_loop():
+        x = 0
+        i = 0
+        while i < 5:
+            x += i
+            i += 1
+
+    def comprehension():
+        x = [i for i in range(5)]
+
+    # Get the bytecode
+    import dis
+    print(f"Using dis on loop:")
+    dis.dis(loop)
+
+    print(f"\nUsing dis on while loop:")
+    dis.dis(while_loop)
+
+    print(f"List comprehension:")
+    dis.dis(comprehension)
+
+
 
 def basic_instr_set():
     what_to_execute = {
@@ -80,7 +129,7 @@ def basic_instr_set():
     interpreter.run_code(what_to_execute)
 
 
-def var_instr_set():
+def var_instr_dummy_set():
 
     what_to_execute = {
         "instructions": [("LOAD_VALUE", 0),
@@ -100,4 +149,4 @@ def var_instr_set():
 
 
 if __name__ == '__main__':
-    var_instr_set()
+    get_bytecode_example_loop()
